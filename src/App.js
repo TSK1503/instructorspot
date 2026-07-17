@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Star, Search, Shield, ChevronRight, Car, Users, CheckCircle, Phone, MessageCircle } from "lucide-react";
+import { MapPin, Star, Search, Shield, Car, Users, CheckCircle, Phone, MessageCircle } from "lucide-react";
 
 const AMBER = "#E8A800";
 const RED = "#CC0000";
@@ -7,7 +7,7 @@ const DARK = "#111111";
 const GREY = "#6B7280";
 const LIGHTBG = "#F7F4EE";
 const TSK_PHONE = "07436622000";
-const TSK_WHATSAPP = `https://wa.me/447436622000`;
+const TSK_WHATSAPP = "https://wa.me/447436622000";
 
 function Logo({ size = "md", light = false }) {
   const scale = size === "sm" ? 0.6 : size === "lg" ? 1.4 : 1;
@@ -44,11 +44,6 @@ const INSTRUCTORS = [
 export default function App() {
   const [postcode, setPostcode] = useState("");
   const [searched, setSearched] = useState(false);
-  const [enquired, setEnquired] = useState({});
-  const [showEnquiry, setShowEnquiry] = useState(false);
-  const [enquiryName, setEnquiryName] = useState("");
-  const [enquiryPhone, setEnquiryPhone] = useState("");
-  const [enquirySent, setEnquirySent] = useState(false);
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", background: "#fff", minHeight: "100vh", color: DARK }}>
@@ -123,13 +118,11 @@ export default function App() {
       {/* INSTRUCTOR CARDS */}
       <section id="instructors" style={{ background: LIGHTBG, padding: "48px 20px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 28, flexWrap: "wrap", gap: 10 }}>
-            <div>
-              <h2 style={{ fontFamily: "Arial Black, sans-serif", fontSize: 26, fontWeight: 900, margin: 0 }}>
-                {searched && postcode ? `Instructors near ${postcode}` : "Instructors near you"}
-              </h2>
-              <p style={{ color: GREY, fontSize: 14, margin: "4px 0 0" }}>{INSTRUCTORS.length} results · sorted by distance</p>
-            </div>
+          <div style={{ marginBottom: 28 }}>
+            <h2 style={{ fontFamily: "Arial Black, sans-serif", fontSize: 26, fontWeight: 900, margin: 0 }}>
+              {searched && postcode ? `Instructors near ${postcode}` : "Instructors near you"}
+            </h2>
+            <p style={{ color: GREY, fontSize: 14, margin: "4px 0 0" }}>{INSTRUCTORS.length} results · sorted by distance</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))", gap: 16 }}>
             {INSTRUCTORS.map(inst => (
@@ -162,51 +155,48 @@ export default function App() {
                     </div>
                   )}
                 </div>
-
                 <div style={{ fontFamily: "Arial Black, sans-serif", fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{inst.name}</div>
-
                 <div style={{ display: "flex", alignItems: "center", gap: 5, color: GREY, fontSize: 13, marginBottom: 12 }}>
                   <MapPin size={13} color={RED} />
                   <span>{inst.area}</span>
                   <span style={{ color: "#d1d5db" }}>·</span>
                   <span style={{ color: RED, fontWeight: 600 }}>{inst.distance}</span>
-                  {inst.verified && (<><span style={{ color: "#d1d5db" }}>·</span><CheckCircle size={13} color="#10b981" /><span style={{ color: "#10b981", fontSize: 11 }}>Verified</span></>)}
+                  {inst.verified && (
+                    <>
+                      <span style={{ color: "#d1d5db" }}>·</span>
+                      <CheckCircle size={13} color="#10b981" />
+                      <span style={{ color: "#10b981", fontSize: 11 }}>Verified</span>
+                    </>
+                  )}
                 </div>
-
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
-                  {inst.tags.map(t => (<span key={t} style={{ background: LIGHTBG, color: DARK, fontSize: 11, padding: "4px 10px", borderRadius: 20, border: "1px solid #e5e7eb" }}>{t}</span>))}
+                  {inst.tags.map(t => (
+                    <span key={t} style={{ background: LIGHTBG, color: DARK, fontSize: 11, padding: "4px 10px", borderRadius: 20, border: "1px solid #e5e7eb" }}>{t}</span>
+                  ))}
                 </div>
-
                 <div style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 14, borderTop: "1px solid #f3f4f6" }}>
                   {inst.comingSoon ? (
-                    <span style={{ color: GREY, fontSize: 13 }}>Join the waitlist</span>
+                    <span style={{ color: GREY, fontSize: 13 }}>Coming soon</span>
                   ) : (
                     <div>
-                      <div style={{ fontSize: 12, color: GREY }}>
+                      <div>
                         <span style={{ fontFamily: "Arial Black, sans-serif", fontSize: 18, fontWeight: 900, color: AMBER }}>£{inst.priceManual}</span>
                         <span style={{ color: GREY, fontSize: 11 }}>/hr manual</span>
                       </div>
-                      <div style={{ fontSize: 12, color: GREY }}>
+                      <div>
                         <span style={{ fontFamily: "Arial Black, sans-serif", fontSize: 18, fontWeight: 900, color: AMBER }}>£{inst.priceAuto}</span>
                         <span style={{ color: GREY, fontSize: 11 }}>/hr automatic</span>
                       </div>
                     </div>
                   )}
-
                   {!inst.comingSoon && (
                     <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                      
-                        href={TSK_WHATSAPP}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{ background: "#25D366", color: "#fff", border: "none", borderRadius: 8, padding: "8px 14px", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 5, textDecoration: "none" }}
-                      >
+                      <a href={TSK_WHATSAPP} target="_blank" rel="noreferrer"
+                        style={{ background: "#25D366", color: "#fff", borderRadius: 8, padding: "8px 14px", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 5, textDecoration: "none" }}>
                         <MessageCircle size={13} /> WhatsApp
                       </a>
-                      
-                        href={`tel:${TSK_PHONE}`}
-                        style={{ background: DARK, color: "#fff", border: "none", borderRadius: 8, padding: "8px 14px", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 5, textDecoration: "none" }}
-                      >
+                      <a href={`tel:${TSK_PHONE}`}
+                        style={{ background: DARK, color: "#fff", borderRadius: 8, padding: "8px 14px", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 5, textDecoration: "none" }}>
                         <Phone size={13} /> Call us
                       </a>
                     </div>
@@ -267,6 +257,7 @@ export default function App() {
           hello@instructorspot.co.uk · 07436622000
         </p>
       </footer>
+
     </div>
   );
 }
