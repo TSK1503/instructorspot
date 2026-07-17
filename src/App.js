@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Star, Search, Shield, Car, Users, CheckCircle, Phone, MessageCircle, Loader } from "lucide-react";
+import { MapPin, Search, Shield, Users, Star, Phone, Mail, Car, CheckCircle, ChevronRight } from "lucide-react";
 
 const AMBER = "#E8A800";
 const RED = "#CC0000";
@@ -7,6 +7,7 @@ const DARK = "#111111";
 const GREY = "#6B7280";
 const LIGHTBG = "#F7F4EE";
 const TSK_PHONE = "07436622000";
+const TSK_EMAIL = "hello@instructorspot.co.uk";
 const TSK_WHATSAPP = "https://wa.me/447436622000";
 
 function Logo({ size = "md", light = false }) {
@@ -32,66 +33,42 @@ function Logo({ size = "md", light = false }) {
   );
 }
 
-const BASE_INSTRUCTORS = [
-  { id: 1, name: "TSK Driving School", area: "Timperley", postcode: "WA15 7AB", lat: 53.3879, lng: -2.3308, priceManual: 40, priceAuto: 45, rating: 4.9, reviews: 124, tags: ["Manual", "Automatic", "Intensive"], verified: true, featured: true, comingSoon: false },
-  { id: 2, name: "Instructor Coming Soon", area: "Bolton", postcode: "BL1 1AA", lat: 53.5780, lng: -2.4282, priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
-  { id: 3, name: "Instructor Coming Soon", area: "Salford", postcode: "M5 4WT", lat: 53.4830, lng: -2.2931, priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
-  { id: 4, name: "Instructor Coming Soon", area: "Stockport", postcode: "SK1 1AA", lat: 53.4062, lng: -2.1575, priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
-  { id: 5, name: "Instructor Coming Soon", area: "Bury", postcode: "BL9 0AA", lat: 53.5933, lng: -2.2966, priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
-  { id: 6, name: "Instructor Coming Soon", area: "Wigan", postcode: "WN1 1AA", lat: 53.5450, lng: -2.6325, priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
-];
-
-function getDistanceMiles(lat1, lng1, lat2, lng2) {
-  const R = 3958.8;
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLng = (lng2 - lng1) * Math.PI / 180;
-  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLng / 2) * Math.sin(dLng / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return (R * c).toFixed(1);
-}
-
 export default function App() {
-  const [postcode, setPostcode] = useState("");
-  const [searched, setSearched] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [instructors, setInstructors] = useState(
-    BASE_INSTRUCTORS.map(i => ({ ...i, distance: null }))
-  );
+  const [form, setForm] = useState({ name: "", phone: "", postcode: "", type: "", availability: "" });
+  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!postcode.trim()) return;
-    setLoading(true);
-    setError("");
-    try {
-      const res = await fetch(`https://api.postcodes.io/postcodes/${postcode.trim().replace(/\s/g, "")}`);
-      const data = await res.json();
-      if (data.status !== 200) {
-        setError("Postcode not found — please check and try again.");
-        setLoading(false);
-        return;
-      }
-      const { latitude, longitude } = data.result;
-      const sorted = BASE_INSTRUCTORS
-        .map(inst => ({
-          ...inst,
-          distance: getDistanceMiles(latitude, longitude, inst.lat, inst.lng)
-        }))
-        .sort((a, b) => {
-          if (a.featured) return -1;
-          if (b.featured) return 1;
-          return parseFloat(a.distance) - parseFloat(b.distance);
-        });
-      setInstructors(sorted);
-      setSearched(true);
-    } catch (err) {
-      setError("Something went wrong — please try again.");
-    }
-    setLoading(false);
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim()) e.name = "Please enter your name";
+    if (!form.phone.trim()) e.phone = "Please enter your phone number";
+    if (!form.postcode.trim()) e.postcode = "Please enter your postcode";
+    if (!form.type) e.type = "Please select lesson type";
+    return e;
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const e2 = validate();
+    if (Object.keys(e2).length > 0) {
+      setErrors(e2);
+      return;
+    }
+    setSubmitted(true);
+  };
+
+  const inputStyle = (field) => ({
+    width: "100%",
+    padding: "12px 16px",
+    borderRadius: 10,
+    border: `1.5px solid ${errors[field] ? RED : "#e5e7eb"}`,
+    fontSize: 14,
+    fontFamily: "Arial, sans-serif",
+    outline: "none",
+    boxSizing: "border-box",
+    color: DARK,
+    background: "#fff"
+  });
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", background: "#fff", minHeight: "100vh", color: DARK }}>
@@ -100,9 +77,11 @@ export default function App() {
       <nav style={{ background: "#fff", borderBottom: "1px solid #eee", position: "sticky", top: 0, zIndex: 50 }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 20px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <Logo size="sm" />
-          <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
             <a href="#how" style={{ color: GREY, fontSize: 14, textDecoration: "none" }}>How it works</a>
-            <a href="#instructors" style={{ color: GREY, fontSize: 14, textDecoration: "none" }}>Instructors</a>
+            <a href={`tel:${TSK_PHONE}`} style={{ color: GREY, fontSize: 14, textDecoration: "none", display: "flex", alignItems: "center", gap: 5 }}>
+              <Phone size={14} color={AMBER} /> {TSK_PHONE}
+            </a>
             <button style={{ background: DARK, color: "#fff", border: "none", borderRadius: 8, padding: "9px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
               List your profile
             </button>
@@ -114,177 +93,181 @@ export default function App() {
       <section style={{ background: "linear-gradient(135deg, #111 0%, #1e1e2e 100%)", padding: "70px 20px 60px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: -60, right: -60, width: 300, height: 300, borderRadius: "50%", background: AMBER, opacity: 0.06 }} />
         <div style={{ position: "absolute", bottom: -40, left: -40, width: 200, height: 200, borderRadius: "50%", background: RED, opacity: 0.08 }} />
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(232,168,0,0.12)", border: "1px solid rgba(232,168,0,0.3)", borderRadius: 20, padding: "5px 12px", marginBottom: 24 }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", background: AMBER }} />
-            <span style={{ color: AMBER, fontSize: 12, letterSpacing: 1 }}>Greater Manchester's #1 Instructor Marketplace</span>
-          </div>
-          <h1 style={{ color: "#fff", fontSize: "clamp(28px, 5vw, 52px)", fontWeight: 900, fontFamily: "Arial Black, sans-serif", lineHeight: 1.05, maxWidth: 700, marginBottom: 16 }}>
-            Compare local driving instructors — prices, ratings and distance,{" "}
-            <span style={{ color: AMBER }}>all in one Spot.</span>
-          </h1>
-          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 17, maxWidth: 520, marginBottom: 36, lineHeight: 1.6 }}>
-            Skip the big franchises. Find verified independent instructors near you and book directly — no middleman, no hidden fees.
-          </p>
-          <form onSubmit={handleSearch} style={{ display: "flex", gap: 10, maxWidth: 560, flexWrap: "wrap" }}>
-            <div style={{ flex: 1, minWidth: 200, display: "flex", alignItems: "center", gap: 10, background: "#fff", borderRadius: 12, padding: "14px 16px" }}>
-              <MapPin size={18} color={GREY} />
-              <input
-                value={postcode}
-                onChange={e => setPostcode(e.target.value.toUpperCase())}
-                placeholder="Enter your postcode..."
-                style={{ border: "none", outline: "none", fontSize: 15, fontFamily: "monospace", width: "100%", background: "transparent", color: DARK }}
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              style={{ background: AMBER, color: DARK, border: "none", borderRadius: 12, padding: "14px 28px", fontSize: 15, fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, opacity: loading ? 0.7 : 1 }}
-            >
-              {loading ? <Loader size={18} /> : <Search size={18} />}
-              {loading ? "Searching..." : "Find Instructors"}
-            </button>
-          </form>
-          {error && (
-            <p style={{ color: RED, fontSize: 13, marginTop: 10 }}>{error}</p>
-          )}
-          <div style={{ display: "flex", gap: 28, marginTop: 32, flexWrap: "wrap" }}>
-            {[
-              { icon: Shield, label: "DVSA Verified", sub: "All instructors badge-checked" },
-              { icon: Users, label: "200+ Instructors", sub: "Across Greater Manchester" },
-              { icon: Star, label: "4.8 Avg Rating", sub: "From 2,400+ student reviews" },
-            ].map(({ icon: Icon, label, sub }) => (
-              <div key={label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(232,168,0,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Icon size={16} color={AMBER} />
-                </div>
-                <div>
-                  <div style={{ color: "#fff", fontSize: 13, fontWeight: 700 }}>{label}</div>
-                  <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11 }}>{sub}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
 
-      {/* INSTRUCTOR CARDS */}
-      <section id="instructors" style={{ background: LIGHTBG, padding: "48px 20px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ marginBottom: 28 }}>
-            <h2 style={{ fontFamily: "Arial Black, sans-serif", fontSize: 26, fontWeight: 900, margin: 0 }}>
-              {searched && postcode ? `Instructors near ${postcode}` : "Instructors near you"}
-            </h2>
-            <p style={{ color: GREY, fontSize: 14, margin: "4px 0 0" }}>
-              {searched ? `${instructors.length} results · sorted by distance` : "Enter your postcode above to find instructors near you"}
+          {/* Left — headline */}
+          <div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(232,168,0,0.12)", border: "1px solid rgba(232,168,0,0.3)", borderRadius: 20, padding: "5px 12px", marginBottom: 24 }}>
+              <div style={{ width: 6, height: 6, borderRadius: "50%", background: AMBER }} />
+              <span style={{ color: AMBER, fontSize: 12, letterSpacing: 1 }}>Greater Manchester's #1 Instructor Marketplace</span>
+            </div>
+            <h1 style={{ color: "#fff", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, fontFamily: "Arial Black, sans-serif", lineHeight: 1.05, marginBottom: 16 }}>
+              Find your perfect driving instructor,{" "}
+              <span style={{ color: AMBER }}>matched to you.</span>
+            </h1>
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 16, marginBottom: 32, lineHeight: 1.7 }}>
+              Tell us what you're looking for and we'll match you with the right verified instructor in your area — completely free, no commitment.
             </p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))", gap: 16 }}>
-            {instructors.map(inst => (
-              <div key={inst.id} style={{
-                background: inst.comingSoon ? "#fafafa" : "#fff",
-                borderRadius: 16,
-                border: inst.featured ? `2px solid ${AMBER}` : "1px solid #e5e7eb",
-                padding: 20,
-                display: "flex",
-                flexDirection: "column",
-                position: "relative",
-                opacity: inst.comingSoon ? 0.6 : 1,
-                boxShadow: inst.featured ? `0 4px 24px rgba(232,168,0,0.12)` : "0 1px 4px rgba(0,0,0,0.04)"
-              }}>
-                {inst.featured && (
-                  <div style={{ position: "absolute", top: -1, right: 16, background: AMBER, color: DARK, fontSize: 10, fontWeight: 900, padding: "3px 10px", borderRadius: "0 0 6px 6px", letterSpacing: 1 }}>★ FEATURED</div>
-                )}
-                {inst.comingSoon && (
-                  <div style={{ position: "absolute", top: -1, right: 16, background: GREY, color: "#fff", fontSize: 10, fontWeight: 900, padding: "3px 10px", borderRadius: "0 0 6px 6px", letterSpacing: 1 }}>COMING SOON</div>
-                )}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: 12, background: inst.featured ? AMBER : "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <Car size={20} color={inst.featured ? DARK : GREY} />
+            <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+              {[
+                { icon: Shield, label: "DVSA Verified", sub: "All instructors badge-checked" },
+                { icon: Users, label: "Free Service", sub: "No fees for students" },
+                { icon: Star, label: "4.8 Avg Rating", sub: "From student reviews" },
+              ].map(({ icon: Icon, label, sub }) => (
+                <div key={label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(232,168,0,0.12)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <Icon size={16} color={AMBER} />
                   </div>
-                  {!inst.comingSoon && (
-                    <div style={{ display: "flex", alignItems: "center", gap: 4, background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 20, padding: "3px 10px" }}>
-                      <Star size={12} fill={AMBER} color={AMBER} />
-                      <span style={{ fontSize: 13, fontWeight: 700 }}>{inst.rating}</span>
-                      <span style={{ fontSize: 11, color: GREY }}>({inst.reviews})</span>
-                    </div>
-                  )}
+                  <div>
+                    <div style={{ color: "#fff", fontSize: 13, fontWeight: 700 }}>{label}</div>
+                    <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11 }}>{sub}</div>
+                  </div>
                 </div>
-                <div style={{ fontFamily: "Arial Black, sans-serif", fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{inst.name}</div>
-                <div style={{ display: "flex", alignItems: "center", gap: 5, color: GREY, fontSize: 13, marginBottom: 12 }}>
-                  <MapPin size={13} color={RED} />
-                  <span>{inst.area}</span>
-                  {inst.distance && (
-                    <>
-                      <span style={{ color: "#d1d5db" }}>·</span>
-                      <span style={{ color: RED, fontWeight: 600 }}>{inst.distance} mi</span>
-                    </>
-                  )}
-                  {inst.verified && (
-                    <>
-                      <span style={{ color: "#d1d5db" }}>·</span>
-                      <CheckCircle size={13} color="#10b981" />
-                      <span style={{ color: "#10b981", fontSize: 11 }}>Verified</span>
-                    </>
-                  )}
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
-                  {inst.tags.map(t => (
-                    <span key={t} style={{ background: LIGHTBG, color: DARK, fontSize: 11, padding: "4px 10px", borderRadius: 20, border: "1px solid #e5e7eb" }}>{t}</span>
-                  ))}
-                </div>
-                <div style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 14, borderTop: "1px solid #f3f4f6" }}>
-                  {inst.comingSoon ? (
-                    <span style={{ color: GREY, fontSize: 13 }}>Coming soon</span>
-                  ) : (
-                    <div>
-                      <div>
-                        <span style={{ fontFamily: "Arial Black, sans-serif", fontSize: 18, fontWeight: 900, color: AMBER }}>£{inst.priceManual}</span>
-                        <span style={{ color: GREY, fontSize: 11 }}>/hr manual</span>
-                      </div>
-                      <div>
-                        <span style={{ fontFamily: "Arial Black, sans-serif", fontSize: 18, fontWeight: 900, color: AMBER }}>£{inst.priceAuto}</span>
-                        <span style={{ color: GREY, fontSize: 11 }}>/hr automatic</span>
-                      </div>
-                    </div>
-                  )}
-                  {!inst.comingSoon && (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                      <a href={TSK_WHATSAPP} target="_blank" rel="noreferrer"
-                        style={{ background: "#25D366", color: "#fff", borderRadius: 8, padding: "8px 14px", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 5, textDecoration: "none" }}>
-                        <MessageCircle size={13} /> WhatsApp
-                      </a>
-                      <a href={`tel:${TSK_PHONE}`}
-                        style={{ background: DARK, color: "#fff", borderRadius: 8, padding: "8px 14px", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 5, textDecoration: "none" }}>
-                        <Phone size={13} /> Call us
-                      </a>
-                    </div>
-                  )}
+              ))}
+            </div>
+          </div>
+
+          {/* Right — enquiry form */}
+          <div style={{ background: "#fff", borderRadius: 20, padding: 32, boxShadow: "0 24px 64px rgba(0,0,0,0.3)" }}>
+            {submitted ? (
+              <div style={{ textAlign: "center", padding: "20px 0" }}>
+                <CheckCircle size={52} color="#10b981" style={{ margin: "0 auto 16px" }} />
+                <h3 style={{ fontFamily: "Arial Black, sans-serif", fontSize: 22, margin: "0 0 8px" }}>We're on it! 🎉</h3>
+                <p style={{ color: GREY, fontSize: 14, lineHeight: 1.6, margin: "0 0 20px" }}>
+                  Thanks {form.name.split(" ")[0]}! We'll find the best instructor near <strong>{form.postcode.toUpperCase()}</strong> and be in touch within 2 hours.
+                </p>
+                <p style={{ color: GREY, fontSize: 13, margin: "0 0 24px" }}>
+                  Can't wait? Call or WhatsApp us now:
+                </p>
+                <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+                  <a href={TSK_WHATSAPP} target="_blank" rel="noreferrer"
+                    style={{ background: "#25D366", color: "#fff", borderRadius: 10, padding: "10px 20px", fontSize: 13, fontWeight: 700, textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}>
+                    WhatsApp Us
+                  </a>
+                  <a href={`tel:${TSK_PHONE}`}
+                    style={{ background: DARK, color: "#fff", borderRadius: 10, padding: "10px 20px", fontSize: 13, fontWeight: 700, textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}>
+                    <Phone size={13} /> Call Us
+                  </a>
                 </div>
               </div>
-            ))}
+            ) : (
+              <>
+                <h3 style={{ fontFamily: "Arial Black, sans-serif", fontSize: 20, margin: "0 0 6px" }}>Find my instructor</h3>
+                <p style={{ color: GREY, fontSize: 13, margin: "0 0 20px" }}>Free matching service — we'll be in touch within 2 hours</p>
+                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  <div>
+                    <input
+                      placeholder="Your full name"
+                      value={form.name}
+                      onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                      style={inputStyle("name")}
+                    />
+                    {errors.name && <p style={{ color: RED, fontSize: 11, margin: "4px 0 0" }}>{errors.name}</p>}
+                  </div>
+                  <div>
+                    <input
+                      placeholder="Your phone number"
+                      value={form.phone}
+                      onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                      style={inputStyle("phone")}
+                    />
+                    {errors.phone && <p style={{ color: RED, fontSize: 11, margin: "4px 0 0" }}>{errors.phone}</p>}
+                  </div>
+                  <div>
+                    <input
+                      placeholder="Your postcode"
+                      value={form.postcode}
+                      onChange={e => setForm(f => ({ ...f, postcode: e.target.value.toUpperCase() }))}
+                      style={inputStyle("postcode")}
+                    />
+                    {errors.postcode && <p style={{ color: RED, fontSize: 11, margin: "4px 0 0" }}>{errors.postcode}</p>}
+                  </div>
+                  <div>
+                    <select
+                      value={form.type}
+                      onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
+                      style={{ ...inputStyle("type"), color: form.type ? DARK : GREY }}
+                    >
+                      <option value="">Lesson type</option>
+                      <option value="manual">Manual</option>
+                      <option value="automatic">Automatic</option>
+                      <option value="both">Either — not sure yet</option>
+                    </select>
+                    {errors.type && <p style={{ color: RED, fontSize: 11, margin: "4px 0 0" }}>{errors.type}</p>}
+                  </div>
+                  <div>
+                    <select
+                      value={form.availability}
+                      onChange={e => setForm(f => ({ ...f, availability: e.target.value }))}
+                      style={{ ...inputStyle("availability"), color: form.availability ? DARK : GREY }}
+                    >
+                      <option value="">When do you want to start?</option>
+                      <option value="asap">As soon as possible</option>
+                      <option value="week">Within a week</option>
+                      <option value="month">Within a month</option>
+                      <option value="flexible">Flexible</option>
+                    </select>
+                  </div>
+                  <button
+                    type="submit"
+                    style={{ background: AMBER, color: DARK, border: "none", borderRadius: 10, padding: "14px", fontSize: 15, fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 4 }}
+                  >
+                    Find My Instructor <ChevronRight size={18} />
+                  </button>
+                  <p style={{ color: GREY, fontSize: 11, textAlign: "center", margin: 0 }}>
+                    Free service · No payment required · We'll call you back
+                  </p>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how" style={{ padding: "56px 20px", background: "#fff" }}>
+      <section id="how" style={{ padding: "64px 20px", background: "#fff" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 44 }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontFamily: "Arial Black, sans-serif", fontSize: 28, fontWeight: 900, margin: "0 0 8px" }}>How InstructorSpot works</h2>
-            <p style={{ color: GREY, fontSize: 15 }}>Find the right instructor in under 2 minutes</p>
+            <p style={{ color: GREY, fontSize: 15 }}>Matched to the right instructor in under 2 hours</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 32 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 40 }}>
             {[
-              { step: "01", title: "Enter your postcode", body: "Tell us where you are and we instantly show you every verified instructor nearby." },
-              { step: "02", title: "Compare side by side", body: "See prices, ratings, distance and specialities all in one place — no clicking around." },
-              { step: "03", title: "Enquire directly", body: "Send your details straight to the instructor. No middleman, no commission, no fuss." },
-              { step: "04", title: "Start your lessons", body: "Your instructor gets in touch and you book your first lesson on your terms." },
+              { step: "01", icon: MapPin, title: "Tell us where you are", body: "Enter your postcode and what type of lessons you're looking for — manual, automatic, or intensive." },
+              { step: "02", icon: Search, title: "We find your match", body: "We search our network of verified DVSA-registered instructors in your area and find the best fit." },
+              { step: "03", icon: Phone, title: "We call you back", body: "Within 2 hours our team will contact you with your matched instructor and next steps." },
+              { step: "04", icon: Car, title: "Start your lessons", body: "Book your first lesson directly with your instructor — on your terms, at your pace." },
             ].map(s => (
               <div key={s.step}>
-                <div style={{ fontFamily: "Arial Black, sans-serif", fontSize: 36, fontWeight: 900, color: AMBER, marginBottom: 10 }}>{s.step}</div>
+                <div style={{ fontFamily: "Arial Black, sans-serif", fontSize: 36, fontWeight: 900, color: AMBER, marginBottom: 12 }}>{s.step}</div>
                 <div style={{ fontFamily: "Arial Black, sans-serif", fontWeight: 700, fontSize: 16, marginBottom: 8 }}>{s.title}</div>
                 <p style={{ color: GREY, fontSize: 14, lineHeight: 1.6, margin: 0 }}>{s.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHY US */}
+      <section style={{ background: LIGHTBG, padding: "64px 20px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <h2 style={{ fontFamily: "Arial Black, sans-serif", fontSize: 28, fontWeight: 900, margin: "0 0 8px" }}>Why use InstructorSpot?</h2>
+            <p style={{ color: GREY, fontSize: 15 }}>We do the hard work so you don't have to</p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>
+            {[
+              { title: "Completely free for students", body: "Our matching service costs you nothing. No hidden fees, no subscriptions, no surprises.", icon: "🆓" },
+              { title: "DVSA verified instructors only", body: "Every instructor on our platform is checked and verified — you'll never be matched with an unqualified instructor.", icon: "✅" },
+              { title: "Local instructors near you", body: "We only match you with instructors who actually teach in your area — no travelling across Manchester.", icon: "📍" },
+              { title: "Manual and automatic available", body: "Whatever you need — manual gearbox, automatic, intensive courses or refresher lessons — we've got you covered.", icon: "🚗" },
+              { title: "No commitment required", body: "Just fill in the form and we'll call you back. No obligation to book until you're happy with your match.", icon: "🤝" },
+              { title: "Fast response — within 2 hours", body: "We know you want to get started. We'll have a matched instructor back to you within 2 hours of your enquiry.", icon: "⚡" },
+            ].map(item => (
+              <div key={item.title} style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #e5e7eb" }}>
+                <div style={{ fontSize: 28, marginBottom: 12 }}>{item.icon}</div>
+                <div style={{ fontFamily: "Arial Black, sans-serif", fontWeight: 700, fontSize: 15, marginBottom: 8 }}>{item.title}</div>
+                <p style={{ color: GREY, fontSize: 13, lineHeight: 1.6, margin: 0 }}>{item.body}</p>
               </div>
             ))}
           </div>
@@ -297,7 +280,7 @@ export default function App() {
           <div>
             <h2 style={{ fontFamily: "Arial Black, sans-serif", color: "#fff", fontSize: 26, fontWeight: 900, margin: "0 0 8px" }}>Are you a driving instructor?</h2>
             <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 15, margin: 0, maxWidth: 480 }}>
-              Get found by learners across Greater Manchester without paying AA or BSM franchise fees. List your profile from £15/month.
+              Get matched with local learners across Greater Manchester without paying AA or BSM franchise fees. List your profile from £15/month.
             </p>
           </div>
           <button style={{ background: AMBER, color: DARK, border: "none", borderRadius: 12, padding: "16px 32px", fontSize: 15, fontWeight: 900, cursor: "pointer", whiteSpace: "nowrap" }}>
@@ -307,13 +290,18 @@ export default function App() {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ background: "#0a0a0a", padding: "28px 20px", textAlign: "center" }}>
+      <footer style={{ background: "#0a0a0a", padding: "32px 20px", textAlign: "center" }}>
         <Logo size="sm" light />
-        <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 11, marginTop: 12, letterSpacing: 1 }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 16, flexWrap: "wrap" }}>
+          <a href={`tel:${TSK_PHONE}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none", display: "flex", alignItems: "center", gap: 5 }}>
+            <Phone size={12} /> {TSK_PHONE}
+          </a>
+          <a href={`mailto:${TSK_EMAIL}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none", display: "flex", alignItems: "center", gap: 5 }}>
+            <Mail size={12} /> {TSK_EMAIL}
+          </a>
+        </div>
+        <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 11, marginTop: 16, letterSpacing: 1 }}>
           © 2026 INSTRUCTORSPOT · GREATER MANCHESTER · ALL RIGHTS RESERVED
-        </p>
-        <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 11, marginTop: 4 }}>
-          hello@instructorspot.co.uk · 07436622000
         </p>
       </footer>
 
