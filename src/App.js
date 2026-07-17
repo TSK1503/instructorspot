@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Star, Search, Shield, Car, Users, CheckCircle, Phone, MessageCircle } from "lucide-react";
+import { MapPin, Star, Search, Shield, Car, Users, CheckCircle, Phone, MessageCircle, Loader } from "lucide-react";
 
 const AMBER = "#E8A800";
 const RED = "#CC0000";
@@ -32,18 +32,66 @@ function Logo({ size = "md", light = false }) {
   );
 }
 
-const INSTRUCTORS = [
-  { id: 1, name: "TSK Driving School", area: "Timperley", distance: "0.8 mi", priceManual: 40, priceAuto: 45, rating: 4.9, reviews: 124, tags: ["Manual", "Automatic", "Intensive"], verified: true, featured: true, comingSoon: false },
-  { id: 2, name: "Instructor Coming Soon", area: "Bolton", distance: "2.1 mi", priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
-  { id: 3, name: "Instructor Coming Soon", area: "Salford", distance: "3.4 mi", priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
-  { id: 4, name: "Instructor Coming Soon", area: "Stockport", distance: "4.2 mi", priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
-  { id: 5, name: "Instructor Coming Soon", area: "Bury", distance: "5.1 mi", priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
-  { id: 6, name: "Instructor Coming Soon", area: "Wigan", distance: "6.3 mi", priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
+const BASE_INSTRUCTORS = [
+  { id: 1, name: "TSK Driving School", area: "Timperley", postcode: "WA15 7AB", lat: 53.3879, lng: -2.3308, priceManual: 40, priceAuto: 45, rating: 4.9, reviews: 124, tags: ["Manual", "Automatic", "Intensive"], verified: true, featured: true, comingSoon: false },
+  { id: 2, name: "Instructor Coming Soon", area: "Bolton", postcode: "BL1 1AA", lat: 53.5780, lng: -2.4282, priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
+  { id: 3, name: "Instructor Coming Soon", area: "Salford", postcode: "M5 4WT", lat: 53.4830, lng: -2.2931, priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
+  { id: 4, name: "Instructor Coming Soon", area: "Stockport", postcode: "SK1 1AA", lat: 53.4062, lng: -2.1575, priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
+  { id: 5, name: "Instructor Coming Soon", area: "Bury", postcode: "BL9 0AA", lat: 53.5933, lng: -2.2966, priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
+  { id: 6, name: "Instructor Coming Soon", area: "Wigan", postcode: "WN1 1AA", lat: 53.5450, lng: -2.6325, priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
 ];
+
+function getDistanceMiles(lat1, lng1, lat2, lng2) {
+  const R = 3958.8;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return (R * c).toFixed(1);
+}
 
 export default function App() {
   const [postcode, setPostcode] = useState("");
   const [searched, setSearched] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [instructors, setInstructors] = useState(
+    BASE_INSTRUCTORS.map(i => ({ ...i, distance: null }))
+  );
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!postcode.trim()) return;
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch(`https://api.postcodes.io/postcodes/${postcode.trim().replace(/\s/g, "")}`);
+      const data = await res.json();
+      if (data.status !== 200) {
+        setError("Postcode not found — please check and try again.");
+        setLoading(false);
+        return;
+      }
+      const { latitude, longitude } = data.result;
+      const sorted = BASE_INSTRUCTORS
+        .map(inst => ({
+          ...inst,
+          distance: getDistanceMiles(latitude, longitude, inst.lat, inst.lng)
+        }))
+        .sort((a, b) => {
+          if (a.featured) return -1;
+          if (b.featured) return 1;
+          return parseFloat(a.distance) - parseFloat(b.distance);
+        });
+      setInstructors(sorted);
+      setSearched(true);
+    } catch (err) {
+      setError("Something went wrong — please try again.");
+    }
+    setLoading(false);
+  };
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", background: "#fff", minHeight: "100vh", color: DARK }}>
@@ -78,7 +126,7 @@ export default function App() {
           <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 17, maxWidth: 520, marginBottom: 36, lineHeight: 1.6 }}>
             Skip the big franchises. Find verified independent instructors near you and book directly — no middleman, no hidden fees.
           </p>
-          <div style={{ display: "flex", gap: 10, maxWidth: 560, flexWrap: "wrap" }}>
+          <form onSubmit={handleSearch} style={{ display: "flex", gap: 10, maxWidth: 560, flexWrap: "wrap" }}>
             <div style={{ flex: 1, minWidth: 200, display: "flex", alignItems: "center", gap: 10, background: "#fff", borderRadius: 12, padding: "14px 16px" }}>
               <MapPin size={18} color={GREY} />
               <input
@@ -89,12 +137,17 @@ export default function App() {
               />
             </div>
             <button
-              onClick={() => setSearched(true)}
-              style={{ background: AMBER, color: DARK, border: "none", borderRadius: 12, padding: "14px 28px", fontSize: 15, fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", gap: 8 }}
+              type="submit"
+              disabled={loading}
+              style={{ background: AMBER, color: DARK, border: "none", borderRadius: 12, padding: "14px 28px", fontSize: 15, fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, opacity: loading ? 0.7 : 1 }}
             >
-              <Search size={18} /> Find Instructors
+              {loading ? <Loader size={18} /> : <Search size={18} />}
+              {loading ? "Searching..." : "Find Instructors"}
             </button>
-          </div>
+          </form>
+          {error && (
+            <p style={{ color: RED, fontSize: 13, marginTop: 10 }}>{error}</p>
+          )}
           <div style={{ display: "flex", gap: 28, marginTop: 32, flexWrap: "wrap" }}>
             {[
               { icon: Shield, label: "DVSA Verified", sub: "All instructors badge-checked" },
@@ -122,10 +175,12 @@ export default function App() {
             <h2 style={{ fontFamily: "Arial Black, sans-serif", fontSize: 26, fontWeight: 900, margin: 0 }}>
               {searched && postcode ? `Instructors near ${postcode}` : "Instructors near you"}
             </h2>
-            <p style={{ color: GREY, fontSize: 14, margin: "4px 0 0" }}>{INSTRUCTORS.length} results · sorted by distance</p>
+            <p style={{ color: GREY, fontSize: 14, margin: "4px 0 0" }}>
+              {searched ? `${instructors.length} results · sorted by distance` : "Enter your postcode above to find instructors near you"}
+            </p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))", gap: 16 }}>
-            {INSTRUCTORS.map(inst => (
+            {instructors.map(inst => (
               <div key={inst.id} style={{
                 background: inst.comingSoon ? "#fafafa" : "#fff",
                 borderRadius: 16,
@@ -159,8 +214,12 @@ export default function App() {
                 <div style={{ display: "flex", alignItems: "center", gap: 5, color: GREY, fontSize: 13, marginBottom: 12 }}>
                   <MapPin size={13} color={RED} />
                   <span>{inst.area}</span>
-                  <span style={{ color: "#d1d5db" }}>·</span>
-                  <span style={{ color: RED, fontWeight: 600 }}>{inst.distance}</span>
+                  {inst.distance && (
+                    <>
+                      <span style={{ color: "#d1d5db" }}>·</span>
+                      <span style={{ color: RED, fontWeight: 600 }}>{inst.distance} mi</span>
+                    </>
+                  )}
                   {inst.verified && (
                     <>
                       <span style={{ color: "#d1d5db" }}>·</span>
