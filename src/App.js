@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { MapPin, Star, Search, Shield, ChevronRight, Car, Users, CheckCircle } from "lucide-react";
+import { MapPin, Star, Search, Shield, ChevronRight, Car, Users, CheckCircle, Phone, MessageCircle } from "lucide-react";
 
 const AMBER = "#E8A800";
 const RED = "#CC0000";
 const DARK = "#111111";
 const GREY = "#6B7280";
 const LIGHTBG = "#F7F4EE";
+const TSK_PHONE = "07436622000";
+const TSK_WHATSAPP = `https://wa.me/447436622000`;
 
 function Logo({ size = "md", light = false }) {
   const scale = size === "sm" ? 0.6 : size === "lg" ? 1.4 : 1;
@@ -31,18 +33,22 @@ function Logo({ size = "md", light = false }) {
 }
 
 const INSTRUCTORS = [
-  { id: 1, name: "TSK Driving School", area: "Timperley", distance: "0.8 mi", price: 32, rating: 4.9, reviews: 124, tags: ["Manual", "Automatic", "Intensive"], verified: true, featured: true },
-  { id: 2, name: "Sarah Mitchell Tuition", area: "Bolton", distance: "2.1 mi", price: 28, rating: 4.8, reviews: 89, tags: ["Automatic", "Female Instructor"], verified: true, featured: false },
-  { id: 3, name: "GM Drive Academy", area: "Salford", distance: "3.4 mi", price: 30, rating: 4.7, reviews: 67, tags: ["Manual", "Pass Plus"], verified: true, featured: false },
-  { id: 4, name: "Apex Driving Tuition", area: "Stockport", distance: "4.2 mi", price: 34, rating: 4.9, reviews: 201, tags: ["Intensive", "Manual"], verified: true, featured: false },
-  { id: 5, name: "Northside Instructors", area: "Bury", distance: "5.1 mi", price: 27, rating: 4.6, reviews: 45, tags: ["Manual", "Automatic"], verified: true, featured: false },
-  { id: 6, name: "Wigan Wheels", area: "Wigan", distance: "6.3 mi", price: 29, rating: 4.8, reviews: 78, tags: ["Manual", "Female Instructor"], verified: true, featured: false },
+  { id: 1, name: "TSK Driving School", area: "Timperley", distance: "0.8 mi", priceManual: 40, priceAuto: 45, rating: 4.9, reviews: 124, tags: ["Manual", "Automatic", "Intensive"], verified: true, featured: true, comingSoon: false },
+  { id: 2, name: "Instructor Coming Soon", area: "Bolton", distance: "2.1 mi", priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
+  { id: 3, name: "Instructor Coming Soon", area: "Salford", distance: "3.4 mi", priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
+  { id: 4, name: "Instructor Coming Soon", area: "Stockport", distance: "4.2 mi", priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
+  { id: 5, name: "Instructor Coming Soon", area: "Bury", distance: "5.1 mi", priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
+  { id: 6, name: "Instructor Coming Soon", area: "Wigan", distance: "6.3 mi", priceManual: null, priceAuto: null, rating: null, reviews: null, tags: ["Manual"], verified: false, featured: false, comingSoon: true },
 ];
 
 export default function App() {
   const [postcode, setPostcode] = useState("");
   const [searched, setSearched] = useState(false);
   const [enquired, setEnquired] = useState({});
+  const [showEnquiry, setShowEnquiry] = useState(false);
+  const [enquiryName, setEnquiryName] = useState("");
+  const [enquiryPhone, setEnquiryPhone] = useState("");
+  const [enquirySent, setEnquirySent] = useState(false);
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", background: "#fff", minHeight: "100vh", color: DARK }}>
@@ -127,21 +133,38 @@ export default function App() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))", gap: 16 }}>
             {INSTRUCTORS.map(inst => (
-              <div key={inst.id} style={{ background: "#fff", borderRadius: 16, border: inst.featured ? `2px solid ${AMBER}` : "1px solid #e5e7eb", padding: 20, display: "flex", flexDirection: "column", position: "relative", boxShadow: inst.featured ? `0 4px 24px rgba(232,168,0,0.12)` : "0 1px 4px rgba(0,0,0,0.04)" }}>
+              <div key={inst.id} style={{
+                background: inst.comingSoon ? "#fafafa" : "#fff",
+                borderRadius: 16,
+                border: inst.featured ? `2px solid ${AMBER}` : "1px solid #e5e7eb",
+                padding: 20,
+                display: "flex",
+                flexDirection: "column",
+                position: "relative",
+                opacity: inst.comingSoon ? 0.6 : 1,
+                boxShadow: inst.featured ? `0 4px 24px rgba(232,168,0,0.12)` : "0 1px 4px rgba(0,0,0,0.04)"
+              }}>
                 {inst.featured && (
                   <div style={{ position: "absolute", top: -1, right: 16, background: AMBER, color: DARK, fontSize: 10, fontWeight: 900, padding: "3px 10px", borderRadius: "0 0 6px 6px", letterSpacing: 1 }}>★ FEATURED</div>
+                )}
+                {inst.comingSoon && (
+                  <div style={{ position: "absolute", top: -1, right: 16, background: GREY, color: "#fff", fontSize: 10, fontWeight: 900, padding: "3px 10px", borderRadius: "0 0 6px 6px", letterSpacing: 1 }}>COMING SOON</div>
                 )}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 12, background: inst.featured ? AMBER : "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <Car size={20} color={inst.featured ? DARK : GREY} />
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 4, background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 20, padding: "3px 10px" }}>
-                    <Star size={12} fill={AMBER} color={AMBER} />
-                    <span style={{ fontSize: 13, fontWeight: 700 }}>{inst.rating}</span>
-                    <span style={{ fontSize: 11, color: GREY }}>({inst.reviews})</span>
-                  </div>
+                  {!inst.comingSoon && (
+                    <div style={{ display: "flex", alignItems: "center", gap: 4, background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 20, padding: "3px 10px" }}>
+                      <Star size={12} fill={AMBER} color={AMBER} />
+                      <span style={{ fontSize: 13, fontWeight: 700 }}>{inst.rating}</span>
+                      <span style={{ fontSize: 11, color: GREY }}>({inst.reviews})</span>
+                    </div>
+                  )}
                 </div>
+
                 <div style={{ fontFamily: "Arial Black, sans-serif", fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{inst.name}</div>
+
                 <div style={{ display: "flex", alignItems: "center", gap: 5, color: GREY, fontSize: 13, marginBottom: 12 }}>
                   <MapPin size={13} color={RED} />
                   <span>{inst.area}</span>
@@ -149,20 +172,45 @@ export default function App() {
                   <span style={{ color: RED, fontWeight: 600 }}>{inst.distance}</span>
                   {inst.verified && (<><span style={{ color: "#d1d5db" }}>·</span><CheckCircle size={13} color="#10b981" /><span style={{ color: "#10b981", fontSize: 11 }}>Verified</span></>)}
                 </div>
+
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
                   {inst.tags.map(t => (<span key={t} style={{ background: LIGHTBG, color: DARK, fontSize: 11, padding: "4px 10px", borderRadius: 20, border: "1px solid #e5e7eb" }}>{t}</span>))}
                 </div>
+
                 <div style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 14, borderTop: "1px solid #f3f4f6" }}>
-                  <div>
-                    <span style={{ fontFamily: "Arial Black, sans-serif", fontSize: 20, fontWeight: 900, color: inst.featured ? AMBER : DARK }}>£{inst.price}</span>
-                    <span style={{ color: GREY, fontSize: 12 }}>/hr</span>
-                  </div>
-                  <button
-                    onClick={() => setEnquired(e => ({ ...e, [inst.id]: true }))}
-                    style={{ background: enquired[inst.id] ? "#10b981" : inst.featured ? AMBER : DARK, color: enquired[inst.id] ? "#fff" : inst.featured ? DARK : "#fff", border: "none", borderRadius: 8, padding: "9px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}
-                  >
-                    {enquired[inst.id] ? <><CheckCircle size={14} /> Sent!</> : <>Enquire <ChevronRight size={14} /></>}
-                  </button>
+                  {inst.comingSoon ? (
+                    <span style={{ color: GREY, fontSize: 13 }}>Join the waitlist</span>
+                  ) : (
+                    <div>
+                      <div style={{ fontSize: 12, color: GREY }}>
+                        <span style={{ fontFamily: "Arial Black, sans-serif", fontSize: 18, fontWeight: 900, color: AMBER }}>£{inst.priceManual}</span>
+                        <span style={{ color: GREY, fontSize: 11 }}>/hr manual</span>
+                      </div>
+                      <div style={{ fontSize: 12, color: GREY }}>
+                        <span style={{ fontFamily: "Arial Black, sans-serif", fontSize: 18, fontWeight: 900, color: AMBER }}>£{inst.priceAuto}</span>
+                        <span style={{ color: GREY, fontSize: 11 }}>/hr automatic</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {!inst.comingSoon && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      
+                        href={TSK_WHATSAPP}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ background: "#25D366", color: "#fff", border: "none", borderRadius: 8, padding: "8px 14px", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 5, textDecoration: "none" }}
+                      >
+                        <MessageCircle size={13} /> WhatsApp
+                      </a>
+                      
+                        href={`tel:${TSK_PHONE}`}
+                        style={{ background: DARK, color: "#fff", border: "none", borderRadius: 8, padding: "8px 14px", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 5, textDecoration: "none" }}
+                      >
+                        <Phone size={13} /> Call us
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -214,6 +262,9 @@ export default function App() {
         <Logo size="sm" light />
         <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 11, marginTop: 12, letterSpacing: 1 }}>
           © 2026 INSTRUCTORSPOT · GREATER MANCHESTER · ALL RIGHTS RESERVED
+        </p>
+        <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 11, marginTop: 4 }}>
+          hello@instructorspot.co.uk · 07436622000
         </p>
       </footer>
     </div>
