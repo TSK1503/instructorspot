@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Shield, Users, Star, Phone, Mail, CheckCircle, ChevronRight } from "lucide-react";
+import { Shield, Users, Star, Phone, Mail, CheckCircle, ChevronRight } from "lucide-react";
 
 const AMBER = "#E8A800";
 const RED = "#CC0000";
