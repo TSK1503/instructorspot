@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Search, Shield, Users, Star, Phone, Mail, Car, CheckCircle, ChevronRight } from "lucide-react";
+import { MapPin, Shield, Users, Star, Phone, Mail, CheckCircle, ChevronRight } from "lucide-react";
 
 const AMBER = "#E8A800";
 const RED = "#CC0000";
@@ -34,8 +34,9 @@ function Logo({ size = "md", light = false }) {
 }
 
 export default function App() {
-  const [form, setForm] = useState({ name: "", phone: "", postcode: "", type: "", availability: "" });
+  const [form, setForm] = useState({ name: "", phone: "", postcode: "", lesson_type: "", availability: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
   const [errors, setErrors] = useState({});
 
   const validate = () => {
@@ -43,18 +44,42 @@ export default function App() {
     if (!form.name.trim()) e.name = "Please enter your name";
     if (!form.phone.trim()) e.phone = "Please enter your phone number";
     if (!form.postcode.trim()) e.postcode = "Please enter your postcode";
-    if (!form.type) e.type = "Please select lesson type";
+    if (!form.lesson_type) e.lesson_type = "Please select lesson type";
     return e;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const e2 = validate();
     if (Object.keys(e2).length > 0) {
       setErrors(e2);
       return;
     }
-    setSubmitted(true);
+    setSending(true);
+    try {
+      const response = await fetch("https://formspree.io/f/mdaqgkja", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          postcode: form.postcode.toUpperCase(),
+          lesson_type: form.lesson_type,
+          availability: form.availability || "Not specified",
+        })
+      });
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        throw new Error("Failed");
+      }
+    } catch (err) {
+      alert("Something went wrong — please call us on 07436622000");
+    }
+    setSending(false);
   };
 
   const inputStyle = (field) => ({
@@ -95,7 +120,6 @@ export default function App() {
         <div style={{ position: "absolute", bottom: -40, left: -40, width: 200, height: 200, borderRadius: "50%", background: RED, opacity: 0.08 }} />
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
 
-          {/* Left — headline */}
           <div>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(232,168,0,0.12)", border: "1px solid rgba(232,168,0,0.3)", borderRadius: 20, padding: "5px 12px", marginBottom: 24 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: AMBER }} />
@@ -127,7 +151,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Right — enquiry form */}
           <div style={{ background: "#fff", borderRadius: 20, padding: 32, boxShadow: "0 24px 64px rgba(0,0,0,0.3)" }}>
             {submitted ? (
               <div style={{ textAlign: "center", padding: "20px 0" }}>
@@ -136,9 +159,7 @@ export default function App() {
                 <p style={{ color: GREY, fontSize: 14, lineHeight: 1.6, margin: "0 0 20px" }}>
                   Thanks {form.name.split(" ")[0]}! We'll find the best instructor near <strong>{form.postcode.toUpperCase()}</strong> and be in touch within 2 hours.
                 </p>
-                <p style={{ color: GREY, fontSize: 13, margin: "0 0 24px" }}>
-                  Can't wait? Call or WhatsApp us now:
-                </p>
+                <p style={{ color: GREY, fontSize: 13, margin: "0 0 24px" }}>Can't wait? Call or WhatsApp us now:</p>
                 <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
                   <a href={TSK_WHATSAPP} target="_blank" rel="noreferrer"
                     style={{ background: "#25D366", color: "#fff", borderRadius: 10, padding: "10px 20px", fontSize: 13, fontWeight: 700, textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}>
@@ -156,67 +177,39 @@ export default function App() {
                 <p style={{ color: GREY, fontSize: 13, margin: "0 0 20px" }}>Free matching service — we'll be in touch within 2 hours</p>
                 <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                   <div>
-                    <input
-                      placeholder="Your full name"
-                      value={form.name}
-                      onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                      style={inputStyle("name")}
-                    />
+                    <input placeholder="Your full name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} style={inputStyle("name")} />
                     {errors.name && <p style={{ color: RED, fontSize: 11, margin: "4px 0 0" }}>{errors.name}</p>}
                   </div>
                   <div>
-                    <input
-                      placeholder="Your phone number"
-                      value={form.phone}
-                      onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                      style={inputStyle("phone")}
-                    />
+                    <input placeholder="Your phone number" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} style={inputStyle("phone")} />
                     {errors.phone && <p style={{ color: RED, fontSize: 11, margin: "4px 0 0" }}>{errors.phone}</p>}
                   </div>
                   <div>
-                    <input
-                      placeholder="Your postcode"
-                      value={form.postcode}
-                      onChange={e => setForm(f => ({ ...f, postcode: e.target.value.toUpperCase() }))}
-                      style={inputStyle("postcode")}
-                    />
+                    <input placeholder="Your postcode" value={form.postcode} onChange={e => setForm(f => ({ ...f, postcode: e.target.value.toUpperCase() }))} style={inputStyle("postcode")} />
                     {errors.postcode && <p style={{ color: RED, fontSize: 11, margin: "4px 0 0" }}>{errors.postcode}</p>}
                   </div>
                   <div>
-                    <select
-                      value={form.type}
-                      onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
-                      style={{ ...inputStyle("type"), color: form.type ? DARK : GREY }}
-                    >
+                    <select value={form.lesson_type} onChange={e => setForm(f => ({ ...f, lesson_type: e.target.value }))} style={{ ...inputStyle("lesson_type"), color: form.lesson_type ? DARK : GREY }}>
                       <option value="">Lesson type</option>
-                      <option value="manual">Manual</option>
-                      <option value="automatic">Automatic</option>
-                      <option value="both">Either — not sure yet</option>
+                      <option value="Manual">Manual</option>
+                      <option value="Automatic">Automatic</option>
+                      <option value="Either — not sure yet">Either — not sure yet</option>
                     </select>
-                    {errors.type && <p style={{ color: RED, fontSize: 11, margin: "4px 0 0" }}>{errors.type}</p>}
+                    {errors.lesson_type && <p style={{ color: RED, fontSize: 11, margin: "4px 0 0" }}>{errors.lesson_type}</p>}
                   </div>
                   <div>
-                    <select
-                      value={form.availability}
-                      onChange={e => setForm(f => ({ ...f, availability: e.target.value }))}
-                      style={{ ...inputStyle("availability"), color: form.availability ? DARK : GREY }}
-                    >
+                    <select value={form.availability} onChange={e => setForm(f => ({ ...f, availability: e.target.value }))} style={{ ...inputStyle("availability"), color: form.availability ? DARK : GREY }}>
                       <option value="">When do you want to start?</option>
-                      <option value="asap">As soon as possible</option>
-                      <option value="week">Within a week</option>
-                      <option value="month">Within a month</option>
-                      <option value="flexible">Flexible</option>
+                      <option value="As soon as possible">As soon as possible</option>
+                      <option value="Within a week">Within a week</option>
+                      <option value="Within a month">Within a month</option>
+                      <option value="Flexible">Flexible</option>
                     </select>
                   </div>
-                  <button
-                    type="submit"
-                    style={{ background: AMBER, color: DARK, border: "none", borderRadius: 10, padding: "14px", fontSize: 15, fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 4 }}
-                  >
-                    Find My Instructor <ChevronRight size={18} />
+                  <button type="submit" disabled={sending} style={{ background: AMBER, color: DARK, border: "none", borderRadius: 10, padding: "14px", fontSize: 15, fontWeight: 900, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 4, opacity: sending ? 0.7 : 1 }}>
+                    {sending ? "Sending..." : "Find My Instructor"} <ChevronRight size={18} />
                   </button>
-                  <p style={{ color: GREY, fontSize: 11, textAlign: "center", margin: 0 }}>
-                    Free service · No payment required · We'll call you back
-                  </p>
+                  <p style={{ color: GREY, fontSize: 11, textAlign: "center", margin: 0 }}>Free service · No payment required · We'll call you back</p>
                 </form>
               </>
             )}
@@ -233,10 +226,10 @@ export default function App() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 40 }}>
             {[
-              { step: "01", icon: MapPin, title: "Tell us where you are", body: "Enter your postcode and what type of lessons you're looking for — manual, automatic, or intensive." },
-              { step: "02", icon: Search, title: "We find your match", body: "We search our network of verified DVSA-registered instructors in your area and find the best fit." },
-              { step: "03", icon: Phone, title: "We call you back", body: "Within 2 hours our team will contact you with your matched instructor and next steps." },
-              { step: "04", icon: Car, title: "Start your lessons", body: "Book your first lesson directly with your instructor — on your terms, at your pace." },
+              { step: "01", title: "Tell us where you are", body: "Enter your postcode and what type of lessons you're looking for — manual, automatic, or intensive." },
+              { step: "02", title: "We find your match", body: "We search our network of verified DVSA-registered instructors in your area and find the best fit." },
+              { step: "03", title: "We call you back", body: "Within 2 hours our team will contact you with your matched instructor and next steps." },
+              { step: "04", title: "Start your lessons", body: "Book your first lesson directly with your instructor — on your terms, at your pace." },
             ].map(s => (
               <div key={s.step}>
                 <div style={{ fontFamily: "Arial Black, sans-serif", fontSize: 36, fontWeight: 900, color: AMBER, marginBottom: 12 }}>{s.step}</div>
