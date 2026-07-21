@@ -323,6 +323,126 @@ const locations = [
       },
     ],
   },
+  {
+    slug: "macclesfield",
+    name: "Macclesfield",
+    metaTitle: "Driving Instructors in Macclesfield | InstructorSpot",
+    metaDescription:
+      "Find verified driving instructors in Macclesfield and surrounding Cheshire towns. Manual, automatic and intensive courses. Free matching, no obligation.",
+    heading: "Driving Instructors in Macclesfield",
+    intro:
+      "Macclesfield sits just south of the Greater Manchester border, with a mix of steep old-town streets, the A523/A537 for faster confidence-building, and quieter routes out towards Bollington and Prestbury. InstructorSpot instructors covering Macclesfield also typically serve the surrounding Cheshire villages.",
+    areas: [
+      "Macclesfield Town Centre",
+      "Bollington",
+      "Prestbury",
+      "Poynton",
+      "Gawsworth",
+      "Sutton",
+      "Tytherington",
+      "Broken Cross",
+    ],
+    testCentres: [{ name: "Macclesfield", passRate: "49.9%" }],
+    faqs: [
+      {
+        q: "What's the pass rate at Macclesfield test centre?",
+        a: "Macclesfield recorded a 49.9% car pass rate in 2024-25, close to the UK average of 48.7%.",
+      },
+      {
+        q: "Does InstructorSpot cover Macclesfield even though it's outside Greater Manchester?",
+        a: "Yes — several instructors on InstructorSpot cover Macclesfield and the surrounding Cheshire towns as part of their regular teaching area.",
+      },
+    ],
+  },
+  {
+    slug: "wilmslow",
+    name: "Wilmslow",
+    metaTitle: "Driving Instructors in Wilmslow | InstructorSpot",
+    metaDescription:
+      "Compare local driving instructors in Wilmslow, Handforth and Styal. Manual and automatic lessons, matched to your budget and schedule.",
+    heading: "Driving Instructors in Wilmslow",
+    intro:
+      "Wilmslow's mix of affluent residential roads, the A34 bypass and proximity to Manchester Airport traffic makes it a popular spot to learn to drive. InstructorSpot instructors covering Wilmslow typically also teach in Handforth, Styal and the wider Cheshire East / Trafford border area.",
+    areas: [
+      "Wilmslow Town Centre",
+      "Handforth",
+      "Styal",
+      "Dean Row",
+      "Morley Green",
+    ],
+    testCentres: [
+      { name: "Macclesfield or Bredbury (Stockport) — nearest DVSA centres", passRate: null },
+    ],
+    faqs: [
+      {
+        q: "Where do Wilmslow learners take their driving test?",
+        a: "Wilmslow doesn't have its own test centre — most learners book at Macclesfield or Bredbury (Stockport), depending on availability and which routes suit them better.",
+      },
+      {
+        q: "Is Wilmslow in Greater Manchester?",
+        a: "No — Wilmslow is in Cheshire East, just south of the Greater Manchester border. InstructorSpot instructors covering Trafford and Stockport commonly extend into Wilmslow too.",
+      },
+    ],
+  },
+  {
+    slug: "alderley-edge",
+    name: "Alderley Edge",
+    metaTitle: "Driving Instructors in Alderley Edge | InstructorSpot",
+    metaDescription:
+      "Find trusted driving instructors in Alderley Edge and nearby Cheshire villages. Compare manual and automatic lessons and book with confidence.",
+    heading: "Driving Instructors in Alderley Edge",
+    intro:
+      "Alderley Edge's village centre, quieter lanes and easy access to the A34 make it a manageable spot to build confidence before tackling busier Manchester or Macclesfield traffic. InstructorSpot instructors here typically also cover Wilmslow and Nether Alderley.",
+    areas: [
+      "Alderley Edge Village",
+      "Nether Alderley",
+      "Chelford",
+      "Mottram St Andrew",
+    ],
+    testCentres: [
+      { name: "Macclesfield or Bredbury (Stockport) — nearest DVSA centres", passRate: null },
+    ],
+    faqs: [
+      {
+        q: "Where do Alderley Edge learners take their driving test?",
+        a: "Like Wilmslow, Alderley Edge has no test centre of its own — learners typically book at Macclesfield or Bredbury (Stockport).",
+      },
+      {
+        q: "Can I find an automatic instructor in Alderley Edge?",
+        a: "Yes — filter by transmission type in your enquiry and InstructorSpot will only match you with instructors offering automatic lessons in the area.",
+      },
+    ],
+  },
+  {
+    slug: "warrington",
+    name: "Warrington",
+    metaTitle: "Driving Instructors in Warrington | InstructorSpot",
+    metaDescription:
+      "Compare DBS-checked driving instructors in Warrington. Manual, automatic and intensive courses. Free matching service, no obligation to book.",
+    heading: "Driving Instructors in Warrington",
+    intro:
+      "Warrington sits between Manchester and Liverpool, with a road network that mixes motorway junctions (M6, M62, M56), a busy town centre and quieter residential estates — good all-round preparation for the test. InstructorSpot instructors covering Warrington often also teach into Wigan and Leigh.",
+    areas: [
+      "Warrington Town Centre",
+      "Orford",
+      "Great Sankey",
+      "Penketh",
+      "Stockton Heath",
+      "Latchford",
+      "Padgate",
+    ],
+    testCentres: [{ name: "Warrington", passRate: "55.3%" }],
+    faqs: [
+      {
+        q: "What's the pass rate at Warrington test centre?",
+        a: "Warrington posted a 55.3% car pass rate in 2024-25 — well above the UK average of 48.7%, ranking in the top third of centres nationally.",
+      },
+      {
+        q: "Is Warrington close to InstructorSpot's other covered areas?",
+        a: "Yes — Warrington is about 12 miles from Wigan and well connected via the M6/M62, so several instructors cover both areas.",
+      },
+    ],
+  },
 ];
 
 export default locations;
