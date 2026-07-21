@@ -107,6 +107,7 @@ export default function App() {
             <a href={`tel:${TSK_PHONE}`} style={{ color: GREY, fontSize: 14, textDecoration: "none", display: "flex", alignItems: "center", gap: 5 }}>
               <Phone size={14} color={AMBER} /> {TSK_PHONE}
             </a>
+            <a href="/driving-instructors" style={{ color: GREY, fontSize: 14, textDecoration: "none" }}>Areas We Cover</a>
             <button style={{ background: DARK, color: "#fff", border: "none", borderRadius: 8, padding: "9px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
               List your profile
             </button>
@@ -115,7 +116,7 @@ export default function App() {
       </nav>
 
       {/* HERO */}
-      <section style={{ background: "linear-gradient(135deg, #111 0%, #1e1e2e 100%)", padding: "70px 20px 60px", position: "relative", overflow: "hidden" }}>
+      <section id="enquiry" style={{ background: "linear-gradient(135deg, #111 0%, #1e1e2e 100%)", padding: "70px 20px 60px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: -60, right: -60, width: 300, height: 300, borderRadius: "50%", background: AMBER, opacity: 0.06 }} />
         <div style={{ position: "absolute", bottom: -40, left: -40, width: 200, height: 200, borderRadius: "50%", background: RED, opacity: 0.08 }} />
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
