@@ -90,6 +90,17 @@ export default function LocationPage() {
             ))}
           </ul>
         </section>
+        {location.services?.length > 0 && (
+          <section className="location-services">
+            <h2>Popular Lesson Types in {location.name}</h2>
+            {location.services.map((s) => (
+              <div className="location-service" key={s.title}>
+                <h3>{s.title}</h3>
+                <p>{s.description}</p>
+              </div>
+            ))}
+          </section>
+        )}
 
         {location.testCentres?.length > 0 && (
           <section className="location-test-centres">

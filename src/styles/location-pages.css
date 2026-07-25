@@ -78,3 +78,16 @@
   font-weight: 600;
   text-align: center;
 }
+
+.location-services {
+  margin-bottom: 1.5rem;
+}
+
+.location-service {
+  margin-bottom: 1.25rem;
+}
+
+.location-service h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}

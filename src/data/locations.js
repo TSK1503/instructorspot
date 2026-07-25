@@ -1,24 +1,24 @@
 // src/data/locations.js
 //
-// SEO location data for InstructorSpot's Greater Manchester borough pages.
-// One entry per metropolitan borough. Extend later with individual-town
-// pages (e.g. Altrincham, Ashton-under-Lyne) once these are indexed and
-// ranking — start broad, then go long-tail.
+// SEO location data for InstructorSpot's Greater Manchester + border towns.
+// v2: added "driving lessons" phrasing (74k/mo national searches vs 22k for
+// "driving instructors") and a services section targeting "automatic driving
+// lessons" (14.8k/mo) and "intensive driving course" (22.2k/mo) searches,
+// per real Google Keyword Planner data pulled July 2026.
 //
-// Test centre pass rates are 2024-25 DVSA data (car category B), pulled
-// July 2026. Re-check annually when DVSA publishes new figures — stale
-// stats hurt credibility more than no stats at all.
+// Test centre pass rates are 2024-25 DVSA data (car category B). Re-check
+// annually when DVSA publishes new figures.
 
 const locations = [
   {
     slug: "manchester",
     name: "Manchester",
-    metaTitle: "Driving Instructors in Manchester | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Manchester | InstructorSpot",
     metaDescription:
-      "Compare verified, DBS-checked driving instructors in Manchester. Manual, automatic and intensive courses. Free matching, no obligation — find your instructor today.",
-    heading: "Driving Instructors in Manchester",
+      "Compare verified, DBS-checked driving instructors and driving lessons in Manchester. Manual, automatic and intensive courses. Free matching, no obligation.",
+    heading: "Driving Instructors & Driving Lessons in Manchester",
     intro:
-      "Manchester's mix of tight city-centre streets, busy ring roads and residential suburbs makes it one of the more varied places in the UK to learn to drive. InstructorSpot matches learners across the city with local, DBS-checked instructors who know the routes examiners actually use — from Deansgate traffic to the Princess Parkway roundabouts.",
+      "Manchester's mix of tight city-centre streets, busy ring roads and residential suburbs makes it one of the more varied places in the UK to learn to drive. InstructorSpot matches learners across the city with local, DBS-checked instructors offering driving lessons that suit you — from Deansgate traffic to the Princess Parkway roundabouts.",
     areas: [
       "City Centre",
       "Didsbury",
@@ -31,13 +31,25 @@ const locations = [
       "Moss Side",
       "Ancoats",
     ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Manchester",
+        description:
+          "Prefer to skip clutch control altogether? InstructorSpot matches you with Manchester instructors who teach automatic-only, so your lessons focus purely on the roads, not the gearbox.",
+      },
+      {
+        title: "Intensive Driving Courses in Manchester",
+        description:
+          "Need to pass quickly? Several Manchester instructors on InstructorSpot run intensive and semi-intensive courses, compressing weeks of lessons into a shorter run-up to test day.",
+      },
+    ],
     testCentres: [
       { name: "West Didsbury", passRate: "50.9%" },
       { name: "Cheetham Hill", passRate: "43.7%" },
     ],
     faqs: [
       {
-        q: "Which driving test centre will I use in Manchester?",
+        q: "Which test centre will I use in Manchester?",
         a: "Most Manchester learners test at West Didsbury or Cheetham Hill, depending on which is closer to your postcode or has earlier availability. Your instructor can advise which suits your routes better.",
       },
       {
@@ -49,12 +61,12 @@ const locations = [
   {
     slug: "salford",
     name: "Salford",
-    metaTitle: "Driving Instructors in Salford | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Salford | InstructorSpot",
     metaDescription:
-      "Find trusted driving instructors in Salford, including Eccles, Swinton and Walkden. Compare manual and automatic lessons and book with confidence.",
-    heading: "Driving Instructors in Salford",
+      "Find trusted driving instructors and driving lessons in Salford, including Eccles, Swinton and Walkden. Compare manual and automatic lessons and book with confidence.",
+    heading: "Driving Instructors & Driving Lessons in Salford",
     intro:
-      "From the Quays' dual carriageways to the narrower residential roads around Swinton and Walkden, Salford gives learners a genuine mix of driving conditions. InstructorSpot connects you with instructors based locally who teach on the roads you'll actually be tested and driving on.",
+      "From the Quays' dual carriageways to the narrower residential roads around Swinton and Walkden, Salford gives learners a genuine mix of driving conditions. InstructorSpot connects you with local instructors offering driving lessons on the roads you'll actually be tested and driving on.",
     areas: [
       "Salford City Centre",
       "Eccles",
@@ -64,6 +76,18 @@ const locations = [
       "Pendlebury",
       "Worsley",
       "Little Hulton",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Salford",
+        description:
+          "Filter for automatic when you enquire and InstructorSpot will only match you with Salford instructors who teach automatic-only lessons.",
+      },
+      {
+        title: "Intensive Driving Courses in Salford",
+        description:
+          "Working to a deadline? Salford instructors on InstructorSpot offer intensive courses that pack your lessons into consecutive days rather than spreading them over months.",
+      },
     ],
     testCentres: [
       { name: "Cheetham Hill (nearest DVSA centre)", passRate: "43.7%" },
@@ -82,12 +106,12 @@ const locations = [
   {
     slug: "stockport",
     name: "Stockport",
-    metaTitle: "Driving Instructors in Stockport | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Stockport | InstructorSpot",
     metaDescription:
-      "Compare DBS-checked driving instructors in Stockport, covering Cheadle, Hazel Grove, Marple and Bredbury. Manual, automatic and intensive courses available.",
-    heading: "Driving Instructors in Stockport",
+      "Compare DBS-checked driving instructors and driving lessons in Stockport, covering Cheadle, Hazel Grove, Marple and Bredbury. Manual, automatic and intensive courses.",
+    heading: "Driving Instructors & Driving Lessons in Stockport",
     intro:
-      "Stockport learners get a bit of everything — the M60 and A6 for dual-carriageway confidence, hilly routes around Marple and Romiley, and the busier one-way system in the town centre. InstructorSpot's local instructors teach around all of it.",
+      "Stockport learners get a bit of everything — the M60 and A6 for dual-carriageway confidence, hilly routes around Marple and Romiley, and the busier one-way system in the town centre. InstructorSpot's local instructors teach driving lessons around all of it.",
     areas: [
       "Stockport Town Centre",
       "Cheadle",
@@ -97,6 +121,18 @@ const locations = [
       "Reddish",
       "Heaton Moor",
       "Romiley",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Stockport",
+        description:
+          "InstructorSpot matches Stockport learners with instructors offering automatic-only tuition, so you skip clutch control entirely.",
+      },
+      {
+        title: "Intensive Driving Courses in Stockport",
+        description:
+          "Several Stockport instructors on InstructorSpot run intensive courses, ideal if you need to pass within a set number of weeks.",
+      },
     ],
     testCentres: [{ name: "Bredbury", passRate: "54.2%" }],
     faqs: [
@@ -113,12 +149,12 @@ const locations = [
   {
     slug: "bolton",
     name: "Bolton",
-    metaTitle: "Driving Instructors in Bolton | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Bolton | InstructorSpot",
     metaDescription:
-      "Find verified driving instructors in Bolton and surrounding areas including Farnworth, Horwich and Westhoughton. Compare instructors and book free.",
-    heading: "Driving Instructors in Bolton",
+      "Find verified driving instructors and driving lessons in Bolton and surrounding areas including Farnworth, Horwich and Westhoughton. Compare instructors and book free.",
+    heading: "Driving Instructors & Driving Lessons in Bolton",
     intro:
-      "Bolton's test centre consistently posts one of the better pass rates in Greater Manchester, and the borough's mix of moorland edges, town-centre traffic and A58/A666 dual carriageways gives learners solid all-round experience. InstructorSpot matches you with instructors who teach across Bolton and its surrounding townships.",
+      "Bolton's test centre consistently posts one of the better pass rates in Greater Manchester, and the borough's mix of moorland edges, town-centre traffic and A58/A666 dual carriageways gives learners solid all-round driving lesson experience. InstructorSpot matches you with instructors who teach across Bolton and its surrounding townships.",
     areas: [
       "Bolton Town Centre",
       "Farnworth",
@@ -128,6 +164,18 @@ const locations = [
       "Bromley Cross",
       "Breightmet",
       "Harwood",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Bolton",
+        description:
+          "Bolton instructors on InstructorSpot offer automatic-only lessons for learners who'd rather not deal with a clutch.",
+      },
+      {
+        title: "Intensive Driving Courses in Bolton",
+        description:
+          "Need a fast pass? Bolton instructors on InstructorSpot run intensive courses that condense lessons into a short, focused block.",
+      },
     ],
     testCentres: [{ name: "Bolton (Great Lever)", passRate: "56.7%" }],
     faqs: [
@@ -144,12 +192,12 @@ const locations = [
   {
     slug: "bury",
     name: "Bury",
-    metaTitle: "Driving Instructors in Bury | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Bury | InstructorSpot",
     metaDescription:
-      "Compare local driving instructors in Bury, Prestwich, Whitefield and Ramsbottom. Manual and automatic lessons, matched to your budget and schedule.",
-    heading: "Driving Instructors in Bury",
+      "Compare local driving instructors and driving lessons in Bury, Prestwich, Whitefield and Ramsbottom. Manual and automatic lessons, matched to your budget and schedule.",
+    heading: "Driving Instructors & Driving Lessons in Bury",
     intro:
-      "Bury combines town-centre roundabouts with quieter, semi-rural roads towards Ramsbottom and Tottington — useful variety for building confidence before your test. InstructorSpot's instructors know both sides of the borough.",
+      "Bury combines town-centre roundabouts with quieter, semi-rural roads towards Ramsbottom and Tottington — useful variety for building confidence before your test. InstructorSpot's instructors know both sides of the borough and offer driving lessons to match.",
     areas: [
       "Bury Town Centre",
       "Prestwich",
@@ -157,6 +205,18 @@ const locations = [
       "Radcliffe",
       "Ramsbottom",
       "Tottington",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Bury",
+        description:
+          "Filter for automatic in your enquiry and InstructorSpot will only match you with Bury instructors teaching automatic-only lessons.",
+      },
+      {
+        title: "Intensive Driving Courses in Bury",
+        description:
+          "Bury instructors on InstructorSpot offer intensive courses for learners working towards a specific test date.",
+      },
     ],
     testCentres: [
       { name: "Bolton or Rochdale (nearest DVSA centres)", passRate: null },
@@ -175,12 +235,12 @@ const locations = [
   {
     slug: "oldham",
     name: "Oldham",
-    metaTitle: "Driving Instructors in Oldham | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Oldham | InstructorSpot",
     metaDescription:
-      "Find DBS-checked driving instructors in Oldham, Chadderton, Royton and Shaw. Compare manual, automatic and intensive lesson options.",
-    heading: "Driving Instructors in Oldham",
+      "Find DBS-checked driving instructors and driving lessons in Oldham, Chadderton, Royton and Shaw. Compare manual, automatic and intensive lesson options.",
+    heading: "Driving Instructors & Driving Lessons in Oldham",
     intro:
-      "Oldham's hillier streets and the fast A627(M) link give learners a good mix of low-speed manoeuvring and higher-speed confidence-building. InstructorSpot instructors cover Oldham town centre and the surrounding towns.",
+      "Oldham's hillier streets and the fast A627(M) link give learners a good mix of low-speed manoeuvring and higher-speed confidence-building. InstructorSpot instructors cover Oldham town centre and the surrounding towns with driving lessons tailored to you.",
     areas: [
       "Oldham Town Centre",
       "Chadderton",
@@ -189,6 +249,18 @@ const locations = [
       "Failsworth",
       "Lees",
       "Saddleworth",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Oldham",
+        description:
+          "InstructorSpot matches Oldham learners with instructors who teach automatic-only, so you can skip clutch control entirely.",
+      },
+      {
+        title: "Intensive Driving Courses in Oldham",
+        description:
+          "Several InstructorSpot instructors in the Oldham area offer intensive and semi-intensive courses — mention your timeframe in your enquiry.",
+      },
     ],
     testCentres: [{ name: "Chadderton", passRate: "44.9%" }],
     faqs: [
@@ -205,10 +277,10 @@ const locations = [
   {
     slug: "rochdale",
     name: "Rochdale",
-    metaTitle: "Driving Instructors in Rochdale | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Rochdale | InstructorSpot",
     metaDescription:
-      "Compare trusted driving instructors in Rochdale, Middleton, Heywood and Milnrow. Free matching service, no obligation to book.",
-    heading: "Driving Instructors in Rochdale",
+      "Compare trusted driving instructors and driving lessons in Rochdale, Middleton, Heywood and Milnrow. Free matching service, no obligation to book.",
+    heading: "Driving Instructors & Driving Lessons in Rochdale",
     intro:
       "Rochdale's test centre has the toughest pass rate in Greater Manchester, which makes choosing the right instructor — one who trains specifically on local test routes — more important here than almost anywhere else in the region.",
     areas: [
@@ -218,11 +290,23 @@ const locations = [
       "Milnrow",
       "Littleborough",
     ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Rochdale",
+        description:
+          "Rochdale instructors on InstructorSpot offer automatic-only lessons for learners who'd rather skip the clutch.",
+      },
+      {
+        title: "Intensive Driving Courses in Rochdale",
+        description:
+          "Rochdale instructors on InstructorSpot run intensive courses, including route-familiarisation sessions ahead of your test date.",
+      },
+    ],
     testCentres: [{ name: "Rochdale", passRate: "41.2%" }],
     faqs: [
       {
         q: "Why is the Rochdale pass rate lower than other Greater Manchester centres?",
-        a: "Rochdale's 41.2% pass rate (2024-25) reflects busier, more varied test routes rather than stricter examiners. A instructor who trains regularly on those routes can make a real difference.",
+        a: "Rochdale's 41.2% pass rate (2024-25) reflects busier, more varied test routes rather than stricter examiners. An instructor who trains regularly on those routes can make a real difference.",
       },
       {
         q: "Do InstructorSpot instructors in Rochdale offer test-focused packages?",
@@ -233,10 +317,10 @@ const locations = [
   {
     slug: "tameside",
     name: "Tameside",
-    metaTitle: "Driving Instructors in Tameside | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Tameside | InstructorSpot",
     metaDescription:
-      "Find local driving instructors across Tameside, including Ashton-under-Lyne, Denton, Hyde and Stalybridge. Compare and book free.",
-    heading: "Driving Instructors in Tameside",
+      "Find local driving instructors and driving lessons across Tameside, including Ashton-under-Lyne, Denton, Hyde and Stalybridge. Compare and book free.",
+    heading: "Driving Instructors & Driving Lessons in Tameside",
     intro:
       "Tameside stretches from the Pennine edges around Stalybridge to the flatter, busier roads of Denton and Droylsden — instructors here typically cover several towns, so you get someone who genuinely knows the borough rather than just one postcode.",
     areas: [
@@ -247,6 +331,18 @@ const locations = [
       "Droylsden",
       "Dukinfield",
       "Mossley",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Tameside",
+        description:
+          "Filter for automatic in your enquiry and InstructorSpot will only match you with Tameside instructors offering automatic-only lessons.",
+      },
+      {
+        title: "Intensive Driving Courses in Tameside",
+        description:
+          "Tameside instructors on InstructorSpot offer intensive courses for learners working to a set test date.",
+      },
     ],
     testCentres: [{ name: "Hyde (nearest DVSA centre)", passRate: null }],
     faqs: [
@@ -263,12 +359,12 @@ const locations = [
   {
     slug: "trafford",
     name: "Trafford",
-    metaTitle: "Driving Instructors in Trafford | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Trafford | InstructorSpot",
     metaDescription:
-      "Compare driving instructors in Trafford, covering Altrincham, Sale, Stretford and Urmston. Manual, automatic and intensive lessons.",
-    heading: "Driving Instructors in Trafford",
+      "Compare driving instructors and driving lessons in Trafford, covering Altrincham, Sale, Stretford and Urmston. Manual, automatic and intensive lessons.",
+    heading: "Driving Instructors & Driving Lessons in Trafford",
     intro:
-      "Trafford's test centre at Sale posts one of the more balanced pass rates in the region, and the borough's mix of Altrincham's town-centre roundabouts, the M60 and quieter Urmston side streets gives learners solid, varied practice.",
+      "Trafford's test centre at Sale posts one of the more balanced pass rates in the region, and the borough's mix of Altrincham's town-centre roundabouts, the M60 and quieter Urmston side streets gives learners solid, varied driving lesson practice.",
     areas: [
       "Altrincham",
       "Sale",
@@ -278,6 +374,18 @@ const locations = [
       "Partington",
       "Old Trafford",
     ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Trafford",
+        description:
+          "InstructorSpot matches Trafford learners with instructors who teach automatic-only lessons across Sale, Altrincham and Stretford.",
+      },
+      {
+        title: "Intensive Driving Courses in Trafford",
+        description:
+          "Several Trafford instructors on InstructorSpot run intensive courses for learners working to a deadline.",
+      },
+    ],
     testCentres: [{ name: "Sale (Poplar Grove)", passRate: "49.1%" }],
     faqs: [
       {
@@ -286,17 +394,17 @@ const locations = [
       },
       {
         q: "Can I find an instructor near Altrincham specifically?",
-        a: "Yes — give us your postcode and InstructorSpot will match you with instructors who actively cover the Altrincham area.",
+        a: "Yes — give us your postcode and InstructorSpot will match you with instructors who actively cover the Altrincham area, or see our dedicated Altrincham page.",
       },
     ],
   },
   {
     slug: "wigan",
     name: "Wigan",
-    metaTitle: "Driving Instructors in Wigan | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Wigan | InstructorSpot",
     metaDescription:
-      "Find verified driving instructors in Wigan, Leigh, Atherton and Standish. Compare manual, automatic and intensive lesson options.",
-    heading: "Driving Instructors in Wigan",
+      "Find verified driving instructors and driving lessons in Wigan, Leigh, Atherton and Standish. Compare manual, automatic and intensive lesson options.",
+    heading: "Driving Instructors & Driving Lessons in Wigan",
     intro:
       "Wigan borough covers a lot of ground, from the town centre out to Leigh and Standish, with test centres at Atherton and Hindley (Apex) serving different parts of it. InstructorSpot matches you with instructors who cover your specific area rather than the whole borough.",
     areas: [
@@ -307,6 +415,18 @@ const locations = [
       "Ashton-in-Makerfield",
       "Hindley",
       "Golborne",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Wigan",
+        description:
+          "Wigan instructors on InstructorSpot offer automatic-only lessons for learners who'd rather skip clutch control.",
+      },
+      {
+        title: "Intensive Driving Courses in Wigan",
+        description:
+          "Need a fast pass? Wigan instructors on InstructorSpot run intensive courses covering Wigan, Leigh and Standish.",
+      },
     ],
     testCentres: [
       { name: "Atherton", passRate: "44.4%" },
@@ -324,12 +444,56 @@ const locations = [
     ],
   },
   {
+    slug: "altrincham",
+    name: "Altrincham",
+    metaTitle: "Driving Instructors & Driving Lessons in Altrincham | InstructorSpot",
+    metaDescription:
+      "Find verified driving instructors and driving lessons in Altrincham, Hale and Bowdon. Manual, automatic and intensive courses. Free matching, no obligation.",
+    heading: "Driving Instructors & Driving Lessons in Altrincham",
+    intro:
+      "Altrincham's market-town centre, the A56 and quick access to the M56 give learners a manageable mix of low-speed manoeuvring and faster confidence-building. InstructorSpot instructors covering Altrincham typically also teach across Hale, Bowdon and the wider Trafford area.",
+    areas: [
+      "Altrincham Town Centre",
+      "Hale",
+      "Hale Barns",
+      "Bowdon",
+      "Timperley",
+      "Broadheath",
+      "Dunham Massey",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Altrincham",
+        description:
+          "InstructorSpot matches Altrincham learners with instructors who teach automatic-only lessons, so you skip clutch control entirely.",
+      },
+      {
+        title: "Intensive Driving Courses in Altrincham",
+        description:
+          "Working to a deadline? Altrincham instructors on InstructorSpot run intensive and semi-intensive courses to help you pass faster.",
+      },
+    ],
+    testCentres: [
+      { name: "Sale (Trafford) or Bredbury (Stockport) — nearest DVSA centres", passRate: null },
+    ],
+    faqs: [
+      {
+        q: "Where do Altrincham learners take their driving test?",
+        a: "Altrincham doesn't have its own test centre — most learners book at Sale or Bredbury (Stockport), depending on availability and which routes suit them.",
+      },
+      {
+        q: "Can I find an automatic driving instructor in Altrincham?",
+        a: "Yes — filter by transmission type in your enquiry and InstructorSpot will only match you with instructors offering automatic lessons in the area.",
+      },
+    ],
+  },
+  {
     slug: "macclesfield",
     name: "Macclesfield",
-    metaTitle: "Driving Instructors in Macclesfield | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Macclesfield | InstructorSpot",
     metaDescription:
-      "Find verified driving instructors in Macclesfield and surrounding Cheshire towns. Manual, automatic and intensive courses. Free matching, no obligation.",
-    heading: "Driving Instructors in Macclesfield",
+      "Find verified driving instructors and driving lessons in Macclesfield and surrounding Cheshire towns. Manual, automatic and intensive courses. Free matching, no obligation.",
+    heading: "Driving Instructors & Driving Lessons in Macclesfield",
     intro:
       "Macclesfield sits just south of the Greater Manchester border, with a mix of steep old-town streets, the A523/A537 for faster confidence-building, and quieter routes out towards Bollington and Prestbury. InstructorSpot instructors covering Macclesfield also typically serve the surrounding Cheshire villages.",
     areas: [
@@ -341,6 +505,18 @@ const locations = [
       "Sutton",
       "Tytherington",
       "Broken Cross",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Macclesfield",
+        description:
+          "Prefer automatic? InstructorSpot matches you with Macclesfield instructors who teach automatic-only lessons.",
+      },
+      {
+        title: "Intensive Driving Courses in Macclesfield",
+        description:
+          "Macclesfield instructors on InstructorSpot run intensive courses for learners working towards a set test date.",
+      },
     ],
     testCentres: [{ name: "Macclesfield", passRate: "49.9%" }],
     faqs: [
@@ -357,10 +533,10 @@ const locations = [
   {
     slug: "wilmslow",
     name: "Wilmslow",
-    metaTitle: "Driving Instructors in Wilmslow | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Wilmslow | InstructorSpot",
     metaDescription:
-      "Compare local driving instructors in Wilmslow, Handforth and Styal. Manual and automatic lessons, matched to your budget and schedule.",
-    heading: "Driving Instructors in Wilmslow",
+      "Compare local driving instructors and driving lessons in Wilmslow, Handforth and Styal. Manual and automatic lessons, matched to your budget and schedule.",
+    heading: "Driving Instructors & Driving Lessons in Wilmslow",
     intro:
       "Wilmslow's mix of affluent residential roads, the A34 bypass and proximity to Manchester Airport traffic makes it a popular spot to learn to drive. InstructorSpot instructors covering Wilmslow typically also teach in Handforth, Styal and the wider Cheshire East / Trafford border area.",
     areas: [
@@ -369,6 +545,18 @@ const locations = [
       "Styal",
       "Dean Row",
       "Morley Green",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Wilmslow",
+        description:
+          "InstructorSpot matches Wilmslow learners with instructors who teach automatic-only lessons.",
+      },
+      {
+        title: "Intensive Driving Courses in Wilmslow",
+        description:
+          "Several Wilmslow-area instructors on InstructorSpot offer intensive courses for learners working to a deadline.",
+      },
     ],
     testCentres: [
       { name: "Macclesfield or Bredbury (Stockport) — nearest DVSA centres", passRate: null },
@@ -387,10 +575,10 @@ const locations = [
   {
     slug: "alderley-edge",
     name: "Alderley Edge",
-    metaTitle: "Driving Instructors in Alderley Edge | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Alderley Edge | InstructorSpot",
     metaDescription:
-      "Find trusted driving instructors in Alderley Edge and nearby Cheshire villages. Compare manual and automatic lessons and book with confidence.",
-    heading: "Driving Instructors in Alderley Edge",
+      "Find trusted driving instructors and driving lessons in Alderley Edge and nearby Cheshire villages. Compare manual and automatic lessons and book with confidence.",
+    heading: "Driving Instructors & Driving Lessons in Alderley Edge",
     intro:
       "Alderley Edge's village centre, quieter lanes and easy access to the A34 make it a manageable spot to build confidence before tackling busier Manchester or Macclesfield traffic. InstructorSpot instructors here typically also cover Wilmslow and Nether Alderley.",
     areas: [
@@ -398,6 +586,18 @@ const locations = [
       "Nether Alderley",
       "Chelford",
       "Mottram St Andrew",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Alderley Edge",
+        description:
+          "Filter by transmission type in your enquiry and InstructorSpot will only match you with instructors offering automatic lessons in the area.",
+      },
+      {
+        title: "Intensive Driving Courses in Alderley Edge",
+        description:
+          "Instructors covering Alderley Edge on InstructorSpot offer intensive courses for learners working to a set test date.",
+      },
     ],
     testCentres: [
       { name: "Macclesfield or Bredbury (Stockport) — nearest DVSA centres", passRate: null },
@@ -416,10 +616,10 @@ const locations = [
   {
     slug: "warrington",
     name: "Warrington",
-    metaTitle: "Driving Instructors in Warrington | InstructorSpot",
+    metaTitle: "Driving Instructors & Driving Lessons in Warrington | InstructorSpot",
     metaDescription:
-      "Compare DBS-checked driving instructors in Warrington. Manual, automatic and intensive courses. Free matching service, no obligation to book.",
-    heading: "Driving Instructors in Warrington",
+      "Compare DBS-checked driving instructors and driving lessons in Warrington. Manual, automatic and intensive courses. Free matching service, no obligation to book.",
+    heading: "Driving Instructors & Driving Lessons in Warrington",
     intro:
       "Warrington sits between Manchester and Liverpool, with a road network that mixes motorway junctions (M6, M62, M56), a busy town centre and quieter residential estates — good all-round preparation for the test. InstructorSpot instructors covering Warrington often also teach into Wigan and Leigh.",
     areas: [
@@ -430,6 +630,18 @@ const locations = [
       "Stockton Heath",
       "Latchford",
       "Padgate",
+    ],
+    services: [
+      {
+        title: "Automatic Driving Lessons in Warrington",
+        description:
+          "InstructorSpot matches Warrington learners with instructors who teach automatic-only lessons.",
+      },
+      {
+        title: "Intensive Driving Courses in Warrington",
+        description:
+          "Warrington instructors on InstructorSpot run intensive courses for learners working towards a set test date.",
+      },
     ],
     testCentres: [{ name: "Warrington", passRate: "55.3%" }],
     faqs: [
